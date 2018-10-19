@@ -27,37 +27,38 @@ def exportToCSV(hurdatData, filename):
             ID = hr.getStormID(line)
             name = hr.getName(line).strip()
             year = hr.getYear(line)
-            landfall = hr.madeLandfall(line)
         elif hr.isFooter(line):
             pass
         else:
-            x = 11
-            y = 28
-            for i in range(4):
-                lon = hr.getLon(line, x, y)
-                if (hr.getLat(line, x, y) and lon != 0.0):
-                    if lon >= 180.0:
-                        lon = (lon - 360)*-1
-                    else:
-                        lon = lon * -1
-                    csvExport.write('\n')
-                    csvExport.write(str(ID))
-                    csvExport.write(', ' + name)
-                    csvExport.write(', ' + str(year))
-                    csvExport.write(', ' + str(hr.getMonth(line)))
-                    csvExport.write(', ' + str(hr.getDay(line)))
-                    csvExport.write(', ' + str(hourList[i])) # write hour
-                    csvExport.write(', ' + str(hr.getLat(line, x, y)))
-                    csvExport.write(', ' + str(lon))
-                    csvExport.write(', ' + str(hr.getWind(line, x, y)))
-                    csvExport.write(', ' + str(hr.getPressure(line, x, y)))
-                    csvExport.write(', ' + str(hr.getStage(line, x, y)))
-                    csvExport.write(', ' + str(hr.getCategory(line, x, y)))
-                    csvExport.write(', ' + str(landfall))
-                x = y
-                y = x + 17
-                if hr.getMonth(line) == 12 and hr.getDay(line) == 31 and hourList[i] == 18:
-                    year = year + 1                
+#            x = 11
+#            y = 28
+            x = 0
+            y = 0
+#            for i in range(4):
+            lon = hr.getLon(line, x, y)
+            if (hr.getLat(line, x, y) and lon != 0.0):
+#                if lon >= 180.0:
+#                    lon = (lon - 360)*-1
+#                else:
+#                    lon = lon * -1
+                csvExport.write('\n')
+                csvExport.write(str(ID))
+                csvExport.write(', ' + name)
+                csvExport.write(', ' + str(year))
+                csvExport.write(', ' + str(hr.getMonth(line)))
+                csvExport.write(', ' + str(hr.getDay(line)))
+                csvExport.write(', ' + str(hr.getHour(line))) # write hour
+                csvExport.write(', ' + str(hr.getLat(line, x, y)))
+                csvExport.write(', ' + str(lon))
+                csvExport.write(', ' + str(hr.getWind(line, x, y)))
+                csvExport.write(', ' + str(hr.getPressure(line, x, y)))
+                csvExport.write(', ' + str(hr.getStage(line, x, y)))
+                csvExport.write(', ' + str(hr.getCategory(line, x, y)))
+                csvExport.write(', ' + str(hr.madeLandfall(line)))
+#            x = y
+#            y = x + 17
+            if hr.getMonth(line) == 12 and hr.getDay(line) == 31 and hr.getHour(line) == 18:
+                year = year + 1                
     csvExport.close()
     print(csvExport.name, 'saved to', os.getcwd(), '\n')
 
@@ -73,27 +74,28 @@ def exportToTXT(hurdatData, filename):
             ID = hr.getStormID(line)
             name = hr.getName(line)
             year = hr.getYear(line)
-            landfall = hr.madeLandfall(line)
         elif hr.isFooter(line):
             pass
         else:
-            x = 11
-            y = 28
-            for i in range(4):
-                if (hr.getLat(line, x, y) and hr.getLon(line, x, y)) != 0.0:
-                    txtExport.write('\n')
-                    txtExport.write('{0} {1}{2} {3:2d} {4:2d} {5:2d} {6:5.1f} {7:6.1f} {8:3d} {9:4d} {10:16} {11} {12}'.format(
-                        ID, name, year,
-                        hr.getMonth(line), hr.getDay(line), hourList[i],
-                        hr.getLat(line,x,y), hr.getLon(line,x,y),
-                        hr.getWind(line,x,y), hr.getPressure(line,x,y),
-                        hr.getStage(line,x,y), hr.getCategory(line,x,y),
-                        landfall))
-                    #txtExport.write(' ' + str(hr.madeLandfall(line)))
-                x = y
-                y = x + 17
-                if hr.getMonth(line) == 12 and hr.getDay(line) == 31 and hourList[i] == 18:
-                    year = year + 1
+#            x = 11
+#            y = 28
+            x = 0
+            y = 0
+#            for i in range(4):
+            if (hr.getLat(line, x, y) and hr.getLon(line, x, y)) != 0.0:
+                txtExport.write('\n')
+                txtExport.write('{0} {1}{2} {3:2d} {4:2d} {5:2d} {6:5.1f} {7:6.1f} {8:3d} {9:4d} {10:16} {11} {12}'.format(
+                    ID, name, year,
+                    hr.getMonth(line), hr.getDay(line), hr.getHour(line),
+                    hr.getLat(line,x,y), hr.getLon(line,x,y),
+                    hr.getWind(line,x,y), hr.getPressure(line,x,y),
+                    hr.getStage(line,x,y), hr.getCategory(line,x,y),
+                    hr.madeLandfall(line)))
+                #txtExport.write(' ' + str(hr.madeLandfall(line)))
+#            x = y
+#            y = x + 17
+            if hr.getMonth(line) == 12 and hr.getDay(line) == 31 and hr.getHour(line) == 18:
+                year = year + 1
     txtExport.close()
     print(txtExport.name, 'saved to', os.getcwd(), '\n')
 
